@@ -2506,18 +2506,14 @@ ui <- bslib::page_navbar(
                 class = "mb-0",
                 "Reddy, K.G. & Khan, M.G.M. (2026). ",
                 tags$em("FitVerse: Parametric Distribution Fitting and Analysis."),
-                " R package version 1.0-1."
+                " R package version 1.0-2."
               )
             ),
             tags$h6(shiny::icon("link", class = "me-1"), "Links"),
             tags$p(
               class = "mb-0",
-              tags$a(shiny::icon("github"), " GitHub",
-                     href   = "https://github.com/karunareddy/FitVerse",
-                     target = "_blank"),
-              tags$span(class = "mx-1 text-muted", "."),
-              tags$a(shiny::icon("book"), " Documentation",
-                     href   = "https://github.com/karunareddy/FitVerse/wiki",
+              tags$a(shiny::icon("box"), " CRAN",
+                     href   = "https://cran.r-project.org/package=FitVerse",
                      target = "_blank")
             )
           )

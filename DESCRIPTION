@@ -1,8 +1,8 @@
 Package: FitVerse
 Type: Package
 Title: Parametric Distribution Fitting and Analysis
-Version: 1.0-1
-Date: 2026-08-09
+Version: 1.0-2
+Date: 2026-09-06
 Authors@R: c(
     person("Karuna G.", "Reddy",
            email   = "karuna.reddy@auckland.ac.nz",
@@ -50,10 +50,10 @@ Suggests: shiny (>= 1.7.0), bslib (>= 0.5.0), DT, plotly (>= 4.10.0),
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2026-08-22 01:24:26 UTC; karunareddy
+Packaged: 2026-09-06 10:55:39 UTC; karunareddy
 Author: Karuna G. Reddy [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-9467-4668>),
   M. G. M. Khan [aut]
 Maintainer: Karuna G. Reddy <karuna.reddy@auckland.ac.nz>
 Repository: CRAN
-Date/Publication: 2026-09-01 14:20:02 UTC
+Date/Publication: 2026-09-06 22:40:14 UTC

@@ -13,6 +13,9 @@ Three estimation methods are supported: Maximum Likelihood Estimation
 (\code{"MLE"}), Method of Moments (\code{"MOM"}), and L-Moments
 (\code{"LMOM"}).  When multiple methods are requested, all results are
 combined into a single ranking table and the global best model is returned.
+
+\strong{Tip:} For a point-and-click experience, launch the built-in
+interactive Shiny application with \code{\link{FitVerseApp}()}.
 }
 
 \usage{

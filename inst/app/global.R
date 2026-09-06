@@ -12,7 +12,7 @@
 .fv_loaded    <- FALSE
 .is_deployed  <- nzchar(Sys.getenv("SHINY_PORT"))
 
-if (.is_deployed && requireNamespace("FitVerse", quietly = TRUE)) {
+if (requireNamespace("FitVerse", quietly = TRUE)) {
   # ---- Deployed: use installed package ----------------------------------------
   library(FitVerse)
   # actuar and mc2d are in FitVerse's Imports (not Depends), so they are NOT

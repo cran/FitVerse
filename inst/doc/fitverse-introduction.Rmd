@@ -31,6 +31,22 @@ library(FitVerse)
 
 ---
 
+> **Prefer a point-and-click experience?**
+> FitVerse ships with an interactive Shiny application that covers everything
+> in this vignette — upload your data, choose distributions, compare fits, and
+> download diagnostic plots and reports, all without writing a single line of R.
+>
+> ```r
+> library(FitVerse)
+> FitVerseApp()
+> ```
+>
+> The rest of this vignette documents the scripting interface for users who
+> prefer to work programmatically or need to embed FitVerse in their own
+> pipelines.
+
+---
+
 # Introduction
 
 Fitting a probability distribution to data is a common task in statistics,
