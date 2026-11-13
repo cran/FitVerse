@@ -1,6 +1,5 @@
 \name{fitverse_s3methods}
 \alias{print.fitverse}
-\alias{summary.fitverse}
 \alias{coef.fitverse}
 \alias{logLik.fitverse}
 \alias{AIC.fitverse}
@@ -17,8 +16,6 @@ for extracting, displaying, and serialising fitted distribution results.
 \usage{
 \method{print}{fitverse}(x, \dots)
 
-\method{summary}{fitverse}(object, top_n = 10L, \dots)
-
 \method{coef}{fitverse}(object, \dots)
 
 \method{logLik}{fitverse}(object, \dots)
@@ -33,10 +30,6 @@ for extracting, displaying, and serialising fitted distribution results.
 \arguments{
   \item{x, object}{
     An object of class \code{"fitverse"}.
-  }
-  \item{top_n}{
-    Integer: number of top-ranked distributions to show in the ranking
-    table printed by \code{summary()}.  Default \code{10}.
   }
   \item{k}{
     Numeric: penalty per parameter used by \code{AIC()}.  Default \code{2}
@@ -54,11 +47,6 @@ for extracting, displaying, and serialising fitted distribution results.
     Prints a concise single-screen summary: best-fit distribution,
     estimation method, number of parameters, parameter estimates,
     log-likelihood, AIC, BIC, and up to three goodness-of-fit test results.
-  }
-  \item{\code{summary.fitverse()}}{
-    Prints the data summary (from \code{\link{compute_data_summary}()}),
-    the full \code{top_n} ranking table, and the GoF test results for the
-    best-fit model.
   }
   \item{\code{coef.fitverse()}}{
     Returns the named numeric vector of parameter estimates for the
@@ -94,7 +82,6 @@ for extracting, displaying, and serialising fitted distribution results.
 \value{
 \describe{
   \item{\code{print.fitverse()}}{Invisibly returns \code{x}.}
-  \item{\code{summary.fitverse()}}{Invisibly returns \code{object}.}
   \item{\code{coef.fitverse()}}{Named numeric vector of parameter estimates.}
   \item{\code{logLik.fitverse()}}{Object of class \code{"logLik"}.}
   \item{\code{AIC.fitverse()}}{Numeric scalar.}

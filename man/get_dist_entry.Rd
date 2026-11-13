@@ -34,15 +34,9 @@ found in the registry.
 distributions and their supported methods.
 }
 
-\examples{
-e <- get_dist_entry("weibull")
-e$display_name    # "Weibull (2-Parameter)"
-e$supports_lmom   # TRUE
-}
-
 \author{
 Karuna G. Reddy \email{karuna.reddy@auckland.ac.nz} \cr
 M. G. M. Khan \email{mgm.khan@usp.ac.fj}
 }
 
-\keyword{utilities}
+\keyword{internal}

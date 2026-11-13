@@ -1,22 +1,17 @@
 \name{compute_data_summary}
 \alias{compute_data_summary}
-\alias{print_data_summary}
-\title{Compute and Print a Descriptive Statistics Summary}
+\title{Compute a Descriptive Statistics Summary}
 
 \description{
 \code{compute_data_summary()} computes a comprehensive set of descriptive
 statistics for a numeric vector and returns them as a named list.
-\code{print_data_summary()} formats and prints that list to the console.
-
-These functions are called automatically by \code{\link{fitverse}()} and
+It is called automatically by \code{\link{fitverse}()} and
 \code{\link{summary.fitverse}()}, but can also be used independently for
 exploratory data analysis.
 }
 
 \usage{
 compute_data_summary(x, xlab = "x", n_raw = NULL)
-
-print_data_summary(ds)
 }
 
 \arguments{
@@ -32,9 +27,6 @@ print_data_summary(ds)
     Integer or \code{NULL}: the original sample size before cleaning.
     If supplied, \code{n_missing} is computed as \code{n_raw - n}.
     If \code{NULL}, \code{n_missing} is set to \code{NA}.
-  }
-  \item{ds}{
-    A named list as returned by \code{compute_data_summary()}.
   }
 }
 
@@ -61,7 +53,6 @@ elements:
   \item{\code{xlab}}{Character: the variable label.}
 }
 
-\code{print_data_summary()} invisibly returns \code{ds}.
 }
 
 \details{
@@ -88,9 +79,6 @@ set.seed(3)
 x <- rlnorm(500, meanlog = 1, sdlog = 0.5)
 
 ds <- compute_data_summary(x, xlab = "Claim amount", n_raw = 510)
-print_data_summary(ds)
-
-# Access individual statistics
 ds$skewness
 ds$cv
 }

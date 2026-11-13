@@ -931,13 +931,7 @@ fit_mle <- function(x, dist_key) {
 # -- Inverse Weibull MLE (profile likelihood) ----------------------------------
 
 #' MLE for the Inverse Weibull distribution via profile likelihood
-#'
-#' For fixed shape tau, the scale MLE is analytic:
-#'   theta_hat(tau) = (n / sum(x_i^{-tau}))^{1/tau}
-#' This reduces the problem to a 1-D grid + golden-section search over tau,
-#' avoiding the 2-D L-BFGS-B landscape which often stalls on heavy-tailed data.
-#'
-#' @keywords internal
+#' @noRd
 .mle_invweibull <- function(x, entry) {
 
   n <- length(x)
@@ -1876,10 +1870,8 @@ fit_mle <- function(x, dist_key) {
 
 # -- Exponentiated Exponential MLE (closed-form MLE) --------------------------
 
-#' MLE for Exponentiated Exponential: profile-likelihood closed form.
-#' Given alpha, the MLE of lambda = alpha / sum(x * (1-e^{-lambda*x}) ... )
-#' Use numerical optim on log-likelihood (fast 2D problem).
-#' @keywords internal
+#' MLE for Exponentiated Exponential via profile likelihood.
+#' @noRd
 .mle_expexp <- function(x) {
   # Profile MLE for expexp(alpha, lambda):
   # Score equation for alpha (given lambda) has closed form:

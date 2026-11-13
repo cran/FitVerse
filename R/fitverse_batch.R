@@ -204,11 +204,9 @@ fitverse_batch <- function(data,
 
 # -- S3 methods ----------------------------------------------------------------
 
-#' Print a fitverse_batch object
-#' @param x   A \code{fitverse_batch} object.
-#' @param ... Ignored.
 #' @export
 #' @method print fitverse_batch
+#' @noRd
 print.fitverse_batch <- function(x, ...) {
 
   cat("\n")
@@ -230,11 +228,9 @@ print.fitverse_batch <- function(x, ...) {
 }
 
 
-#' Extract the per-column summary table from a batch fit
-#' @param x   A \code{fitverse_batch} object.
-#' @param ... Ignored.
 #' @export
 #' @method summary fitverse_batch
+#' @noRd
 summary.fitverse_batch <- function(object, ...) {
   cat("\n  Batch summary:\n\n")
   print(object$summary, row.names = FALSE)

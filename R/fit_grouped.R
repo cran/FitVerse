@@ -389,20 +389,8 @@ fitverse_grouped <- function(midpoints = NULL,
 
 # -- Utility: read grouped CSV ------------------------------------------------
 
-#' Read a grouped-data CSV and return a list ready for fitverse_grouped()
-#'
-#' Accepts two CSV formats:
-#' \itemize{
-#'   \item Two-column: \code{midpoint, count}
-#'   \item Three-column: \code{lower, upper, count}
-#' }
-#' Comment lines beginning with \code{#} are ignored.
-#'
-#' @param file  Path to the CSV file.
-#' @param sep   Column separator.  Default \code{","}.
-#' @return A list with named elements matching the arguments of
-#'   \code{\link{fitverse_grouped}()}.
 #' @export
+#' @noRd
 read_grouped_csv <- function(file, sep = ",") {
   # Strip comment lines and read
   lines <- readLines(file)

@@ -212,11 +212,9 @@ bootstrap_ci <- function(fit,
 
 # -- S3 print method -----------------------------------------------------------
 
-#' Print a bootstrap CI object
-#' @param x   A \code{fitverse_bootstrap} object.
-#' @param ... Ignored.
 #' @export
 #' @method print fitverse_bootstrap
+#' @noRd
 print.fitverse_bootstrap <- function(x, ...) {
 
   entry <- get_dist_entry(x$dist_key)

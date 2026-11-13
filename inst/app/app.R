@@ -2624,7 +2624,7 @@ ui <- bslib::page_navbar(
   # Trailing nav spacer + version badge
   bslib::nav_spacer(),
   bslib::nav_item(
-    tags$span("v1.0-1",
+    tags$span("v1.0-3",
               style = "color:#aecbea; font-size:0.75rem; padding:8px 4px;")
   )
 )

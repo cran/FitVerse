@@ -87,10 +87,7 @@ compute_data_summary <- function(x, xlab = "x", n_raw = NULL) {
 }
 
 
-#' Pretty-print a data summary object
-#'
-#' @param ds A list returned by \code{compute_data_summary()}.
-#' @export
+#' @noRd
 print_data_summary <- function(ds) {
 
   cat(sprintf("  Variable   : %s\n", ds$xlab))

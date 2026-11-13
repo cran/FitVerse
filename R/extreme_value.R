@@ -68,59 +68,8 @@
 }
 
 
-#' Threshold selection for extreme value analysis
-#'
-#' Produces a three-panel diagnostic figure for selecting the threshold
-#' \eqn{u} above which a Generalised Pareto Distribution (GPD) is
-#' appropriate for modelling exceedances.
-#'
-#' \describe{
-#'   \item{Panel 1 - Mean Residual Life (MRL) plot}{
-#'     The sample mean excess \eqn{e(u) = E[X - u \mid X > u]} is plotted
-#'     against \eqn{u}, together with a pointwise \code{conf}-level
-#'     confidence band.  If GPD holds above a threshold \eqn{u_0}, then
-#'     \eqn{e(u)} is linear in \eqn{u} for \eqn{u > u_0}.  Choose the
-#'     lowest threshold above which the plot is approximately linear.}
-#'   \item{Panel 2 - GPD shape (\eqn{\xi}) stability}{
-#'     The GPD shape parameter estimated by MLE at each threshold, with
-#'     confidence intervals.  Should be approximately constant above the
-#'     true threshold.}
-#'   \item{Panel 3 - GPD modified scale (\eqn{\sigma^*}) stability}{
-#'     The reparameterised scale \eqn{\sigma^* = \sigma - \xi u} (Coles
-#'     2001, p. 78), which is invariant to the threshold when GPD holds.
-#'     Should be approximately constant above the true threshold.}
-#' }
-#'
-#' @param x Numeric vector of data.
-#' @param thresholds Numeric vector of candidate thresholds.  If
-#'   \code{NULL} (default), \code{n_thresholds} equally spaced values
-#'   are generated between the 5th percentile and the value leaving at
-#'   least \code{min_exceedances} observations above it.
-#' @param n_thresholds Integer: number of candidate thresholds when
-#'   \code{thresholds = NULL}.  Default 40.
-#' @param min_exceedances Integer: minimum number of exceedances required
-#'   to include a threshold in the stability plots.  Default 10.
-#' @param conf Numeric: confidence level for the CI bands.  Default 0.95.
-#' @param xlab Character: x-axis / variable label.  Default \code{"x"}.
-#' @param draw Logical: print the combined figure?  Default \code{TRUE}.
-#' @return A named list with elements \code{mrl}, \code{gpd},
-#'   \code{p_mrl}, \code{p_shape}, and \code{p_scale} (the three
-#'   ggplot2 panels), returned invisibly.
-#'
-#' @references
-#'   Coles, S. (2001). \emph{An Introduction to Statistical Modeling of
-#'   Extreme Values}. Springer, London.
-#'
-#'   Davison, A. C. and Smith, R. L. (1990). Models for exceedances over
-#'   high thresholds. \emph{Journal of the Royal Statistical Society B},
-#'   \bold{52}(3), 393--442.
-#'
-#' @examples
-#' set.seed(42)
-#' x <- c(rexp(180), rexp(20) * 5)   # heavier-tailed sample
-#' ev_threshold(x, xlab = "Simulated losses")
-#'
 #' @export
+#' @noRd
 ev_threshold <- function(x,
                          thresholds      = NULL,
                          n_thresholds    = 40L,

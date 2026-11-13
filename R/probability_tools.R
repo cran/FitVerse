@@ -247,7 +247,8 @@
 # directly.  utils.R loads after probability_tools.R alphabetically, so placing
 # them there caused an "object not found" error at package load time.
 
-#' @keywords internal
+#' @export
+#' @noRd
 dweibull3p <- function(x, shape, scale, thres, log = FALSE) {
   y <- x - thres
   if (log) {
@@ -261,19 +262,22 @@ dweibull3p <- function(x, shape, scale, thres, log = FALSE) {
   }
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pweibull3p <- function(q, shape, scale, thres, lower.tail = TRUE, log.p = FALSE) {
   stats::pweibull(q - thres, shape = shape, scale = scale,
                   lower.tail = lower.tail, log.p = log.p)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qweibull3p <- function(p, shape, scale, thres, lower.tail = TRUE, log.p = FALSE) {
   stats::qweibull(p, shape = shape, scale = scale,
                   lower.tail = lower.tail, log.p = log.p) + thres
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rweibull3p <- function(n, shape, scale, thres) {
   stats::rweibull(n, shape = shape, scale = scale) + thres
 }
@@ -361,15 +365,8 @@ dfitverse <- function(x, fit, log = FALSE) {
 
 # -- pfitverse -----------------------------------------------------------------
 
-#' Evaluate the CDF of the best-fit distribution
-#'
-#' @param q           Numeric vector of quantiles.
-#' @param fit         A \code{fitverse} object.
-#' @param lower.tail  Logical: if \code{TRUE} (default), probabilities are
-#'                    \eqn{P[X \le q]}; otherwise \eqn{P[X > q]}.
-#' @param log.p       Logical: if \code{TRUE}, probabilities are log-scaled.
-#' @return Numeric vector of probabilities.
 #' @export
+#' @noRd
 #' @examples
 #' set.seed(1)
 #' dat <- rgamma(200, 2, 0.5)
@@ -397,15 +394,8 @@ pfitverse <- function(q, fit, lower.tail = TRUE, log.p = FALSE) {
 
 # -- qfitverse -----------------------------------------------------------------
 
-#' Compute quantiles of the best-fit distribution
-#'
-#' @param p           Numeric vector of probabilities in (0, 1).
-#' @param fit         A \code{fitverse} object.
-#' @param lower.tail  Logical: if \code{TRUE} (default), probabilities are
-#'                    \eqn{P[X \le q]}.
-#' @param log.p       Logical: if \code{TRUE}, probabilities are log-scaled.
-#' @return Numeric vector of quantiles.
 #' @export
+#' @noRd
 #' @examples
 #' set.seed(1)
 #' dat <- rgamma(200, 2, 0.5)
@@ -434,12 +424,8 @@ qfitverse <- function(p, fit, lower.tail = TRUE, log.p = FALSE) {
 
 # -- rfitverse -----------------------------------------------------------------
 
-#' Draw random samples from the best-fit distribution
-#'
-#' @param n   Integer: number of random observations to generate.
-#' @param fit A \code{fitverse} object.
-#' @return Numeric vector of length \code{n}.
 #' @export
+#' @noRd
 #' @examples
 #' set.seed(1)
 #' dat <- rgamma(200, 2, 0.5)
@@ -509,7 +495,8 @@ return_level <- function(fit,
 # CDF: 1 - (b-x)^2/(b-a)^2
 # QF : b - (b-a)*sqrt(1-u)
 
-#' @keywords internal
+#' @export
+#' @noRd
 drtriangle <- function(x, min, max, log = FALSE) {
   if (max <= min) return(rep(if (log) -Inf else 0, length(x)))
   rng <- max - min
@@ -519,7 +506,8 @@ drtriangle <- function(x, min, max, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 prtriangle <- function(q, min, max) {
   if (max <= min) return(ifelse(q >= max, 1, 0))
   rng <- max - min
@@ -529,12 +517,14 @@ prtriangle <- function(q, min, max) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qrtriangle <- function(p, min, max) {
   max - (max - min) * sqrt(1 - p)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rrtriangle <- function(n, min, max) {
   qrtriangle(stats::runif(n), min, max)
 }
@@ -545,7 +535,8 @@ rrtriangle <- function(n, min, max) {
 # CDF: 1 - (1 - x^a)^b
 # QF : (1 - (1-u)^(1/b))^(1/a)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dkumaraswamy <- function(x, shape1, shape2, log = FALSE) {
   a <- shape1; b <- shape2
   ok <- x > 0 & x < 1
@@ -555,7 +546,8 @@ dkumaraswamy <- function(x, shape1, shape2, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pkumaraswamy <- function(q, shape1, shape2) {
   a <- shape1; b <- shape2
   out <- ifelse(q <= 0, 0,
@@ -564,12 +556,14 @@ pkumaraswamy <- function(q, shape1, shape2) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qkumaraswamy <- function(p, shape1, shape2) {
   (1 - (1 - p)^(1 / shape2))^(1 / shape1)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rkumaraswamy <- function(n, shape1, shape2) {
   qkumaraswamy(stats::runif(n), shape1, shape2)
 }
@@ -579,7 +573,8 @@ rkumaraswamy <- function(n, shape1, shape2) {
 # PDF: sqrt(lambda/(2*pi*x^3)) * exp(-lambda*(x-mu)^2/(2*mu^2*x)),  x > 0
 # CDF: Phi(sqrt(lambda/x)*((x/mu)-1)) + exp(2*lambda/mu)*Phi(-sqrt(lambda/x)*((x/mu)+1))
 
-#' @keywords internal
+#' @export
+#' @noRd
 dinvgaussian <- function(x, mu, lambda, log = FALSE) {
   ok <- x > 0 & is.finite(x)
   lp <- rep(-Inf, length(x))
@@ -589,7 +584,8 @@ dinvgaussian <- function(x, mu, lambda, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pinvgaussian <- function(q, mu, lambda) {
   out <- rep(0, length(q))
   ok  <- q > 0 & is.finite(q)
@@ -603,7 +599,8 @@ pinvgaussian <- function(q, mu, lambda) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qinvgaussian <- function(p, mu, lambda) {
   # Numerical inversion via uniroot for each probability
   vapply(p, function(pi) {
@@ -619,7 +616,8 @@ qinvgaussian <- function(p, mu, lambda) {
   }, numeric(1))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rinvgaussian <- function(n, mu, lambda) {
   # Michael, Schucany & Haas (1976) algorithm
   y  <- stats::rnorm(n)^2
@@ -635,7 +633,8 @@ rinvgaussian <- function(n, mu, lambda) {
 # CDF: 1 - (1+x/lambda)^(-alpha)
 # QF : lambda * ((1-u)^(-1/alpha) - 1)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dlomax <- function(x, alpha, lambda, log = FALSE) {
   ok <- x >= 0 & is.finite(x)
   lp <- rep(-Inf, length(x))
@@ -643,17 +642,20 @@ dlomax <- function(x, alpha, lambda, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 plomax <- function(q, alpha, lambda) {
   ifelse(q < 0, 0, 1 - (1 + q / lambda)^(-alpha))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qlomax <- function(p, alpha, lambda) {
   lambda * ((1 - p)^(-1 / alpha) - 1)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rlomax <- function(n, alpha, lambda) {
   qlomax(stats::runif(n), alpha, lambda)
 }
@@ -664,14 +666,16 @@ rlomax <- function(n, alpha, lambda) {
 # CDF: 0.5*exp((x-mu)/b)  if x < mu
 #      1 - 0.5*exp(-(x-mu)/b)  if x >= mu
 
-#' @keywords internal
+#' @export
+#' @noRd
 dlaplace <- function(x, mu, b, log = FALSE) {
   if (b <= 0) return(rep(if (log) -Inf else 0, length(x)))
   lp <- -log(2) - log(b) - abs(x - mu) / b
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 plaplace <- function(q, mu, b) {
   z <- (q - mu) / b
   ifelse(q < mu,
@@ -679,12 +683,14 @@ plaplace <- function(q, mu, b) {
          1 - 0.5 * exp(-z))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qlaplace <- function(p, mu, b) {
   mu - b * sign(p - 0.5) * log(1 - 2 * abs(p - 0.5))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rlaplace <- function(n, mu, b) {
   qlaplace(stats::runif(n), mu, b)
 }
@@ -696,7 +702,8 @@ rlaplace <- function(n, mu, b) {
 # QF : b * qgamma(u, d/p)^(1/p)
 # Params: p (shape1 > 0), d (shape2 > 0), b (scale > 0)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dgengamma <- function(x, p, d, b, log = FALSE) {
   lp     <- rep(-Inf, length(x))
   ok_vec <- x > 0 & is.finite(x)
@@ -707,7 +714,8 @@ dgengamma <- function(x, p, d, b, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pgengamma <- function(q, p, d, b) {
   out <- rep(0, length(q))
   ok  <- q > 0 & is.finite(q)
@@ -716,12 +724,14 @@ pgengamma <- function(q, p, d, b) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qgengamma <- function(prob, p, d, b) {
   b * stats::qgamma(prob, shape = d / p)^(1 / p)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rgengamma <- function(n, p, d, b) {
   b * stats::rgamma(n, shape = d / p)^(1 / p)
 }
@@ -732,7 +742,8 @@ rgengamma <- function(n, p, d, b) {
 # CDF: 1 - exp(-alpha/beta*(exp(beta*x)-1))
 # QF : log(1 - beta/alpha * log(1-u)) / beta
 
-#' @keywords internal
+#' @export
+#' @noRd
 dgompertz <- function(x, alpha, beta, log = FALSE) {
   ok <- x >= 0 & is.finite(x) & alpha > 0 & beta > 0
   lp <- rep(-Inf, length(x))
@@ -742,7 +753,8 @@ dgompertz <- function(x, alpha, beta, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pgompertz <- function(q, alpha, beta) {
   out <- rep(0, length(q))
   ok  <- q >= 0 & is.finite(q)
@@ -751,12 +763,14 @@ pgompertz <- function(q, alpha, beta) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qgompertz <- function(p, alpha, beta) {
   log(1 - (beta / alpha) * log(1 - p)) / beta
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rgompertz <- function(n, alpha, beta) {
   qgompertz(stats::runif(n), alpha, beta)
 }
@@ -768,7 +782,8 @@ rgompertz <- function(n, alpha, beta) {
 # CDF: Phi(z/alpha)
 # QF : beta * (alpha*z/2 + sqrt((alpha*z/2)^2+1))^2   for z = qnorm(u)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dbirnbaum_saunders <- function(x, alpha, beta, log = FALSE) {
   ok <- x > 0 & is.finite(x) & alpha > 0 & beta > 0
   lp <- rep(-Inf, length(x))
@@ -781,7 +796,8 @@ dbirnbaum_saunders <- function(x, alpha, beta, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pbirnbaum_saunders <- function(q, alpha, beta) {
   out <- rep(0, length(q))
   ok  <- q > 0 & is.finite(q)
@@ -792,14 +808,16 @@ pbirnbaum_saunders <- function(q, alpha, beta) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qbirnbaum_saunders <- function(p, alpha, beta) {
   z  <- stats::qnorm(p)
   t  <- alpha * z / 2
   beta * (t + sqrt(t^2 + 1))^2
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rbirnbaum_saunders <- function(n, alpha, beta) {
   z <- stats::rnorm(n)
   t <- alpha * z / 2
@@ -812,24 +830,28 @@ rbirnbaum_saunders <- function(n, alpha, beta) {
 # CDF: pt((x-mu)/sigma, nu)
 # QF : mu + sigma * qt(p, nu)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dstudent_t <- function(x, nu, mu, sigma, log = FALSE) {
   z  <- (x - mu) / sigma
   lp <- stats::dt(z, df = nu, log = TRUE) - log(sigma)
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pstudent_t <- function(q, nu, mu, sigma) {
   stats::pt((q - mu) / sigma, df = nu)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qstudent_t <- function(p, nu, mu, sigma) {
   mu + sigma * stats::qt(p, df = nu)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rstudent_t <- function(n, nu, mu, sigma) {
   mu + sigma * stats::rt(n, df = nu)
 }
@@ -841,28 +863,32 @@ rstudent_t <- function(n, nu, mu, sigma) {
 # MLE : sigma_hat = sqrt(mean(x^2) / 2)   [closed-form]
 # Note: special case of Weibull(shape=2, scale=sigma*sqrt(2))
 
-#' @keywords internal
+#' @export
+#' @noRd
 drayleigh <- function(x, sigma, log = FALSE) {
   ld <- ifelse(x < 0, -Inf,
                log(x) - 2*log(sigma) - x^2 / (2*sigma^2))
   if (!log) exp(ld) else ld
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 prayleigh <- function(q, sigma, lower.tail = TRUE, log.p = FALSE) {
   p <- ifelse(q < 0, 0, 1 - exp(-q^2 / (2*sigma^2)))
   if (!lower.tail) p <- 1 - p
   if (log.p) log(p) else p
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qrayleigh <- function(p, sigma, lower.tail = TRUE, log.p = FALSE) {
   if (log.p) p <- exp(p)
   if (!lower.tail) p <- 1 - p
   sigma * sqrt(-2 * log(1 - p))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rrayleigh <- function(n, sigma) {
   sigma * sqrt(-2 * log(stats::runif(n)))
 }
@@ -873,28 +899,32 @@ rrayleigh <- function(n, sigma) {
 # PDF : sqrt(2/pi)/sigma * exp(-x^2 / (2*sigma^2)),  x >= 0
 # MLE : sigma_hat = sqrt(mean(x^2))   [closed-form]
 
-#' @keywords internal
+#' @export
+#' @noRd
 dhalfnormal <- function(x, sigma, log = FALSE) {
   ld <- ifelse(x < 0, -Inf,
                0.5*log(2/pi) - log(sigma) - x^2 / (2*sigma^2))
   if (!log) exp(ld) else ld
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 phalfnormal <- function(q, sigma, lower.tail = TRUE, log.p = FALSE) {
   p <- ifelse(q < 0, 0, 2*stats::pnorm(q / sigma) - 1)
   if (!lower.tail) p <- 1 - p
   if (log.p) log(p) else p
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qhalfnormal <- function(p, sigma, lower.tail = TRUE, log.p = FALSE) {
   if (log.p) p <- exp(p)
   if (!lower.tail) p <- 1 - p
   sigma * stats::qnorm((1 + p) / 2)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rhalfnormal <- function(n, sigma) {
   abs(stats::rnorm(n, 0, sigma))
 }
@@ -906,7 +936,8 @@ rhalfnormal <- function(n, sigma) {
 #        * (1-exp(-(x/scale)^shape1))^(shape2-1)
 # QF  : scale * (-log(1 - p^(1/shape2)))^(1/shape1)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dexpweibull <- function(x, shape1, scale, shape2, log = FALSE) {
   ld <- rep(-Inf, length(x))
   ok <- x > 0
@@ -922,7 +953,8 @@ dexpweibull <- function(x, shape1, scale, shape2, log = FALSE) {
   if (!log) exp(ld) else ld
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pexpweibull <- function(q, shape1, scale, shape2,
                         lower.tail = TRUE, log.p = FALSE) {
   p <- ifelse(q <= 0, 0,
@@ -931,7 +963,8 @@ pexpweibull <- function(q, shape1, scale, shape2,
   if (log.p) log(p) else p
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qexpweibull <- function(p, shape1, scale, shape2,
                         lower.tail = TRUE, log.p = FALSE) {
   if (log.p) p <- exp(p)
@@ -939,7 +972,8 @@ qexpweibull <- function(p, shape1, scale, shape2,
   scale * (-log(1 - p^(1 / shape2)))^(1 / shape1)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rexpweibull <- function(n, shape1, scale, shape2) {
   u <- stats::runif(n)
   scale * (-log(1 - u^(1 / shape2)))^(1 / shape1)
@@ -951,7 +985,8 @@ rexpweibull <- function(n, shape1, scale, shape2) {
 # Note: mathematically equivalent to Pearson Type III; offered here with
 #       the engineer-friendly (shape, scale, thres) parameterisation.
 
-#' @keywords internal
+#' @export
+#' @noRd
 dgamma3 <- function(x, shape, scale, thres, log = FALSE) {
   ld <- ifelse(x <= thres, -Inf,
                stats::dgamma(x - thres, shape = shape, scale = scale,
@@ -959,21 +994,24 @@ dgamma3 <- function(x, shape, scale, thres, log = FALSE) {
   if (!log) exp(ld) else ld
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pgamma3 <- function(q, shape, scale, thres,
                     lower.tail = TRUE, log.p = FALSE) {
   stats::pgamma(q - thres, shape = shape, scale = scale,
                 lower.tail = lower.tail, log.p = log.p)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qgamma3 <- function(p, shape, scale, thres,
                     lower.tail = TRUE, log.p = FALSE) {
   thres + stats::qgamma(p, shape = shape, scale = scale,
                         lower.tail = lower.tail, log.p = log.p)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rgamma3 <- function(n, shape, scale, thres) {
   thres + stats::rgamma(n, shape = shape, scale = scale)
 }
@@ -982,7 +1020,8 @@ rgamma3 <- function(n, shape, scale, thres) {
 # -- Log-Normal (3-Parameter) --------------------------------------------------
 # X - thres ~ LogNormal(meanlog, sdlog),   thres = lower threshold
 
-#' @keywords internal
+#' @export
+#' @noRd
 dlnorm3 <- function(x, meanlog, sdlog, thres, log = FALSE) {
   ld <- ifelse(x <= thres, -Inf,
                stats::dlnorm(x - thres, meanlog = meanlog, sdlog = sdlog,
@@ -990,21 +1029,24 @@ dlnorm3 <- function(x, meanlog, sdlog, thres, log = FALSE) {
   if (!log) exp(ld) else ld
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 plnorm3 <- function(q, meanlog, sdlog, thres,
                     lower.tail = TRUE, log.p = FALSE) {
   stats::plnorm(q - thres, meanlog = meanlog, sdlog = sdlog,
                 lower.tail = lower.tail, log.p = log.p)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qlnorm3 <- function(p, meanlog, sdlog, thres,
                     lower.tail = TRUE, log.p = FALSE) {
   thres + stats::qlnorm(p, meanlog = meanlog, sdlog = sdlog,
                         lower.tail = lower.tail, log.p = log.p)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rlnorm3 <- function(n, meanlog, sdlog, thres) {
   thres + stats::rlnorm(n, meanlog = meanlog, sdlog = sdlog)
 }
@@ -1019,7 +1061,8 @@ rlnorm3 <- function(n, meanlog, sdlog, thres) {
 # params: shape1=p, scale=b, shape2=a, shape3=q_s (second shape; 'q' avoided as
 #         name because the CDF p-function's first arg is already named 'q')
 
-#' @keywords internal
+#' @export
+#' @noRd
 dgb2 <- function(x, shape1, scale, shape2, shape3, log = FALSE) {
   p_s <- shape1; b <- scale; a <- shape2; qs <- shape3
   ok  <- x > 0
@@ -1033,7 +1076,8 @@ dgb2 <- function(x, shape1, scale, shape2, shape3, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pgb2 <- function(q, shape1, scale, shape2, shape3,
                   lower.tail = TRUE, log.p = FALSE) {
   p_s <- shape1; b <- scale; a <- shape2; qs <- shape3
@@ -1048,7 +1092,8 @@ pgb2 <- function(q, shape1, scale, shape2, shape3,
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qgb2 <- function(p, shape1, scale, shape2, shape3,
                   lower.tail = TRUE, log.p = FALSE) {
   p_s <- shape1; b <- scale; a <- shape2; qs <- shape3
@@ -1058,7 +1103,8 @@ qgb2 <- function(p, shape1, scale, shape2, shape3,
   b * (u / (1 - u))^(1 / a)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rgb2 <- function(n, shape1, scale, shape2, shape3) {
   qgb2(stats::runif(n), shape1, scale, shape2, shape3)
 }
@@ -1068,7 +1114,8 @@ rgb2 <- function(n, shape1, scale, shape2, shape3) {
 # Hosking (1994) four-parameter distribution encompassing GEV, GPD, logistic.
 # params: xi (location), alpha (scale), kappa (shape1), h (shape2)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dkap4 <- function(x, xi, alpha, kappa, h, log = FALSE) {
   if (!requireNamespace("lmomco", quietly = TRUE))
     stop("Package 'lmomco' is required for the Kappa-4 distribution.", call. = FALSE)
@@ -1087,7 +1134,8 @@ dkap4 <- function(x, xi, alpha, kappa, h, log = FALSE) {
   if (log) ifelse(out > 0, log(out), -Inf) else out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pkap4 <- function(q, xi, alpha, kappa, h, lower.tail = TRUE, log.p = FALSE) {
   if (!requireNamespace("lmomco", quietly = TRUE))
     stop("Package 'lmomco' is required for the Kappa-4 distribution.", call. = FALSE)
@@ -1098,7 +1146,8 @@ pkap4 <- function(q, xi, alpha, kappa, h, lower.tail = TRUE, log.p = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qkap4 <- function(p, xi, alpha, kappa, h, lower.tail = TRUE, log.p = FALSE) {
   if (!requireNamespace("lmomco", quietly = TRUE))
     stop("Package 'lmomco' is required for the Kappa-4 distribution.", call. = FALSE)
@@ -1108,7 +1157,8 @@ qkap4 <- function(p, xi, alpha, kappa, h, lower.tail = TRUE, log.p = FALSE) {
   lmomco::quakap(p, para)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rkap4 <- function(n, xi, alpha, kappa, h) {
   qkap4(stats::runif(n), xi, alpha, kappa, h)
 }
@@ -1118,7 +1168,8 @@ rkap4 <- function(n, xi, alpha, kappa, h) {
 # One-parameter mixture of Exp(theta) and Gamma(2, theta).
 # f(x) = theta^2/(1+theta) * (1+x) * exp(-theta*x),  x>0
 
-#' @keywords internal
+#' @export
+#' @noRd
 dlindley <- function(x, theta, log = FALSE) {
   ok  <- x >= 0 & theta > 0
   lp  <- rep(-Inf, length(x))
@@ -1127,7 +1178,8 @@ dlindley <- function(x, theta, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 plindley <- function(q, theta, lower.tail = TRUE, log.p = FALSE) {
   out <- rep(0.0, length(q))
   ok  <- q > 0 & theta > 0
@@ -1139,7 +1191,8 @@ plindley <- function(q, theta, lower.tail = TRUE, log.p = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qlindley <- function(p, theta, lower.tail = TRUE, log.p = FALSE) {
   if (log.p)       p <- exp(p)
   if (!lower.tail) p <- 1 - p
@@ -1154,7 +1207,8 @@ qlindley <- function(p, theta, lower.tail = TRUE, log.p = FALSE) {
   }, numeric(1))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rlindley <- function(n, theta) {
   qlindley(stats::runif(n), theta)
 }
@@ -1164,14 +1218,16 @@ rlindley <- function(n, theta) {
 # f(x) = beta/(2*sigma*Gamma(1/beta)) * exp(-(|x-mu|/sigma)^beta)
 # beta=2: Normal, beta=1: Laplace, beta->0: uniform, beta->Inf: uniform on [mu-sigma,mu+sigma]
 
-#' @keywords internal
+#' @export
+#' @noRd
 dgnorm <- function(x, mu, sigma, beta, log = FALSE) {
   lp <- log(beta) - log(2) - log(sigma) - lgamma(1 / beta) -
         (abs(x - mu) / sigma)^beta
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pgnorm <- function(q, mu, sigma, beta, lower.tail = TRUE, log.p = FALSE) {
   z  <- abs(q - mu) / sigma
   p  <- 0.5 + sign(q - mu) * 0.5 *
@@ -1181,7 +1237,8 @@ pgnorm <- function(q, mu, sigma, beta, lower.tail = TRUE, log.p = FALSE) {
   if (log.p) log(p) else p
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qgnorm <- function(p, mu, sigma, beta, lower.tail = TRUE, log.p = FALSE) {
   if (log.p)       p <- exp(p)
   if (!lower.tail) p <- 1 - p
@@ -1197,7 +1254,8 @@ qgnorm <- function(p, mu, sigma, beta, lower.tail = TRUE, log.p = FALSE) {
   }, numeric(1))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rgnorm <- function(n, mu, sigma, beta) {
   qgnorm(stats::runif(n), mu, sigma, beta)
 }
@@ -1208,7 +1266,8 @@ rgnorm <- function(n, mu, sigma, beta) {
 # f(x) = a*p/x * (x/b)^(a*p) / (1+(x/b)^a)^(p+1),  x>0
 # params: shape1=p, scale=b, shape2=a
 
-#' @keywords internal
+#' @export
+#' @noRd
 ddagum <- function(x, shape1, scale, shape2, log = FALSE) {
   p_s <- shape1; b <- scale; a <- shape2
   ok  <- x > 0
@@ -1219,7 +1278,8 @@ ddagum <- function(x, shape1, scale, shape2, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pdagum <- function(q, shape1, scale, shape2, lower.tail = TRUE, log.p = FALSE) {
   p_s <- shape1; b <- scale; a <- shape2
   out <- rep(0.0, length(q))
@@ -1232,7 +1292,8 @@ pdagum <- function(q, shape1, scale, shape2, lower.tail = TRUE, log.p = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qdagum <- function(p, shape1, scale, shape2, lower.tail = TRUE, log.p = FALSE) {
   p_s <- shape1; b <- scale; a <- shape2
   if (log.p)       p <- exp(p)
@@ -1240,7 +1301,8 @@ qdagum <- function(p, shape1, scale, shape2, lower.tail = TRUE, log.p = FALSE) {
   b * (p^(-1 / p_s) - 1)^(-1 / a)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rdagum <- function(n, shape1, scale, shape2) {
   qdagum(stats::runif(n), shape1, scale, shape2)
 }
@@ -1250,7 +1312,8 @@ rdagum <- function(n, shape1, scale, shape2) {
 # Z = gamma + delta * arcsinh((X - xi) / lambda),  Z ~ N(0,1)
 # params: gamma, delta (>0), xi, lambda (>0)
 
-#' @keywords internal
+#' @export
+#' @noRd
 djohnsonsu <- function(x, gamma, delta, xi, lambda, log = FALSE) {
   z  <- (x - xi) / lambda
   w  <- gamma + delta * asinh(z)
@@ -1259,7 +1322,8 @@ djohnsonsu <- function(x, gamma, delta, xi, lambda, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pjohnsonsu <- function(q, gamma, delta, xi, lambda,
                         lower.tail = TRUE, log.p = FALSE) {
   z  <- (q - xi) / lambda
@@ -1270,7 +1334,8 @@ pjohnsonsu <- function(q, gamma, delta, xi, lambda,
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qjohnsonsu <- function(p, gamma, delta, xi, lambda,
                         lower.tail = TRUE, log.p = FALSE) {
   if (log.p)       p <- exp(p)
@@ -1279,7 +1344,8 @@ qjohnsonsu <- function(p, gamma, delta, xi, lambda,
   xi + lambda * sinh((z_std - gamma) / delta)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rjohnsonsu <- function(n, gamma, delta, xi, lambda) {
   qjohnsonsu(stats::runif(n), gamma, delta, xi, lambda)
 }
@@ -1294,7 +1360,8 @@ rjohnsonsu <- function(n, gamma, delta, xi, lambda) {
 # CDF:  F(q) = kappa^2/(1+kappa^2) * exp((q-mu)/(kappa*sigma)) for q <= mu
 #        F(q) = 1 - 1/(1+kappa^2) * exp(-kappa*(q-mu)/sigma)   for q > mu
 
-#' @keywords internal
+#' @export
+#' @noRd
 dalaplace <- function(x, mu, sigma, kappa, log = FALSE) {
   k2  <- kappa^2
   u   <- (x - mu) / sigma
@@ -1304,7 +1371,8 @@ dalaplace <- function(x, mu, sigma, kappa, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 palaplace <- function(q, mu, sigma, kappa, lower.tail = TRUE, log.p = FALSE) {
   k2  <- kappa^2
   p0  <- k2 / (1 + k2)       # P(X <= mu) = kappa^2/(1+kappa^2)
@@ -1318,7 +1386,8 @@ palaplace <- function(q, mu, sigma, kappa, lower.tail = TRUE, log.p = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qalaplace <- function(p, mu, sigma, kappa, lower.tail = TRUE, log.p = FALSE) {
   if (log.p)       p <- exp(p)
   if (!lower.tail) p <- 1 - p
@@ -1329,7 +1398,8 @@ qalaplace <- function(p, mu, sigma, kappa, lower.tail = TRUE, log.p = FALSE) {
          mu - sigma / kappa * log((1 - p) * (1 + k2)))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 ralaplace <- function(n, mu, sigma, kappa) {
   qalaplace(stats::runif(n), mu, sigma, kappa)
 }
@@ -1339,7 +1409,8 @@ ralaplace <- function(n, mu, sigma, kappa) {
 # F(x) = (1 - exp(-lambda*x))^alpha,  x>0
 # f(x) = alpha*lambda*exp(-lambda*x)*(1-exp(-lambda*x))^(alpha-1)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dexpexp <- function(x, alpha, lambda, log = FALSE) {
   ok  <- x > 0
   lp  <- rep(-Inf, length(x))
@@ -1349,7 +1420,8 @@ dexpexp <- function(x, alpha, lambda, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pexpexp <- function(q, alpha, lambda, lower.tail = TRUE, log.p = FALSE) {
   out <- ifelse(q > 0, (1 - exp(-lambda * q))^alpha, 0)
   out <- pmax(0, pmin(1, out))
@@ -1358,14 +1430,16 @@ pexpexp <- function(q, alpha, lambda, lower.tail = TRUE, log.p = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qexpexp <- function(p, alpha, lambda, lower.tail = TRUE, log.p = FALSE) {
   if (log.p)       p <- exp(p)
   if (!lower.tail) p <- 1 - p
   -log1p(-p^(1 / alpha)) / lambda
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rexpexp <- function(n, alpha, lambda) {
   qexpexp(stats::runif(n), alpha, lambda)
 }
@@ -1378,7 +1452,8 @@ rexpexp <- function(n, alpha, lambda) {
 # params: mu (location), delta (scale), alpha (shape), beta (skew).
 # Constraint: 0 <= |beta| < alpha, delta > 0.
 
-#' @keywords internal
+#' @export
+#' @noRd
 dnig <- function(x, mu, delta, alpha, beta, log = FALSE) {
   # Hard validity check: NIG requires alpha > |beta| and delta > 0.
   # Return -Inf (log) or 0 (density) for invalid params so that the MLE
@@ -1450,7 +1525,8 @@ dnig <- function(x, mu, delta, alpha, beta, log = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pnig <- function(q, mu, delta, alpha, beta, lower.tail = TRUE, log.p = FALSE) {
   if (requireNamespace("GeneralizedHyperbolic", quietly = TRUE)) {
     out <- tryCatch(
@@ -1480,7 +1556,8 @@ pnig <- function(q, mu, delta, alpha, beta, lower.tail = TRUE, log.p = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qnig <- function(p, mu, delta, alpha, beta, lower.tail = TRUE, log.p = FALSE) {
   if (requireNamespace("GeneralizedHyperbolic", quietly = TRUE)) {
     if (log.p)       p <- exp(p)
@@ -1505,7 +1582,8 @@ qnig <- function(p, mu, delta, alpha, beta, lower.tail = TRUE, log.p = FALSE) {
   }, numeric(1))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rnig <- function(n, mu, delta, alpha, beta) {
   if (requireNamespace("GeneralizedHyperbolic", quietly = TRUE))
     return(GeneralizedHyperbolic::rnig(n, mu = mu, delta = delta,
@@ -1557,7 +1635,8 @@ rnig <- function(n, mu, delta, alpha, beta) {
          yleft = 0, yright = 1)$y
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 dwakeby <- function(x, xi, alpha, beta, gamma, delta, log = FALSE) {
   if (!requireNamespace("lmomco", quietly = TRUE))
     stop("Package 'lmomco' is required for the Wakeby distribution.", call. = FALSE)
@@ -1577,7 +1656,8 @@ dwakeby <- function(x, xi, alpha, beta, gamma, delta, log = FALSE) {
   if (log) log(pmax(out, 1e-300)) else out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pwakeby <- function(q, xi, alpha, beta, gamma, delta,
                      lower.tail = TRUE, log.p = FALSE) {
   if (!requireNamespace("lmomco", quietly = TRUE))
@@ -1590,7 +1670,8 @@ pwakeby <- function(q, xi, alpha, beta, gamma, delta,
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qwakeby <- function(p, xi, alpha, beta, gamma, delta,
                      lower.tail = TRUE, log.p = FALSE) {
   if (!requireNamespace("lmomco", quietly = TRUE))
@@ -1601,7 +1682,8 @@ qwakeby <- function(p, xi, alpha, beta, gamma, delta,
   lmomco::quawak(p, para)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rwakeby <- function(n, xi, alpha, beta, gamma, delta) {
   qwakeby(stats::runif(n), xi, alpha, beta, gamma, delta)
 }
@@ -1613,7 +1695,8 @@ rwakeby <- function(n, xi, alpha, beta, gamma, delta) {
 # params: lambda (index), alpha (shape), beta (skew), delta (scale), mu (loc)
 # Constraint: alpha > |beta|, delta > 0.
 
-#' @keywords internal
+#' @export
+#' @noRd
 dghyp <- function(x, lambda, alpha, beta, delta, mu, log = FALSE) {
   # Hard validity check: GHyp requires alpha > |beta| and delta > 0.
   # Same issue as dnig: the old pmax(alpha^2-beta^2, 1e-15) clamp silently
@@ -1653,7 +1736,8 @@ dghyp <- function(x, lambda, alpha, beta, delta, mu, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pghyp <- function(q, lambda, alpha, beta, delta, mu,
                    lower.tail = TRUE, log.p = FALSE) {
   if (requireNamespace("GeneralizedHyperbolic", quietly = TRUE)) {
@@ -1684,7 +1768,8 @@ pghyp <- function(q, lambda, alpha, beta, delta, mu,
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qghyp <- function(p, lambda, alpha, beta, delta, mu,
                    lower.tail = TRUE, log.p = FALSE) {
   if (requireNamespace("GeneralizedHyperbolic", quietly = TRUE)) {
@@ -1710,7 +1795,8 @@ qghyp <- function(p, lambda, alpha, beta, delta, mu,
   }, numeric(1))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rghyp <- function(n, lambda, alpha, beta, delta, mu) {
   if (requireNamespace("GeneralizedHyperbolic", quietly = TRUE))
     return(GeneralizedHyperbolic::rghyp(n, mu = mu, delta = delta,
@@ -1782,7 +1868,8 @@ rghyp <- function(n, lambda, alpha, beta, delta, mu) {
 # a faster/more-accurate enhancement when available.
 # params: mean (mu), sd (sigma), a (lower bound), b (upper bound)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dtruncnorm <- function(x, mean, sd, a, b, log = FALSE) {
   if (requireNamespace("truncnorm", quietly = TRUE)) {
     out <- truncnorm::dtruncnorm(x, a = a, b = b, mean = mean, sd = sd)
@@ -1797,7 +1884,8 @@ dtruncnorm <- function(x, mean, sd, a, b, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 ptruncnorm <- function(q, mean, sd, a, b, lower.tail = TRUE, log.p = FALSE) {
   if (requireNamespace("truncnorm", quietly = TRUE)) {
     out <- truncnorm::ptruncnorm(q, a = a, b = b, mean = mean, sd = sd)
@@ -1816,7 +1904,8 @@ ptruncnorm <- function(q, mean, sd, a, b, lower.tail = TRUE, log.p = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qtruncnorm <- function(p, mean, sd, a, b, lower.tail = TRUE, log.p = FALSE) {
   if (requireNamespace("truncnorm", quietly = TRUE)) {
     if (log.p)       p <- exp(p)
@@ -1831,7 +1920,8 @@ qtruncnorm <- function(p, mean, sd, a, b, lower.tail = TRUE, log.p = FALSE) {
   stats::qnorm(Fa + p * (Fb - Fa), mean, sd)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rtruncnorm <- function(n, mean, sd, a, b) {
   if (requireNamespace("truncnorm", quietly = TRUE))
     return(truncnorm::rtruncnorm(n, a = a, b = b, mean = mean, sd = sd))
@@ -1845,7 +1935,8 @@ rtruncnorm <- function(n, mean, sd, a, b) {
 # f(x) = 2*m^m/(Gamma(m)*Omega^m) * x^(2m-1) * exp(-m*x^2/Omega),  x>0
 # F(x) = pgamma(m*x^2/Omega, m)
 
-#' @keywords internal
+#' @export
+#' @noRd
 dnakagami <- function(x, m, Omega, log = FALSE) {
   ok  <- x > 0
   lp  <- rep(-Inf, length(x))
@@ -1855,7 +1946,8 @@ dnakagami <- function(x, m, Omega, log = FALSE) {
   if (log) lp else exp(lp)
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 pnakagami <- function(q, m, Omega, lower.tail = TRUE, log.p = FALSE) {
   out <- rep(0.0, length(q))
   ok  <- q > 0
@@ -1866,14 +1958,16 @@ pnakagami <- function(q, m, Omega, lower.tail = TRUE, log.p = FALSE) {
   out
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 qnakagami <- function(p, m, Omega, lower.tail = TRUE, log.p = FALSE) {
   if (log.p)       p <- exp(p)
   if (!lower.tail) p <- 1 - p
   sqrt(Omega / m * stats::qgamma(p, shape = m, rate = 1))
 }
 
-#' @keywords internal
+#' @export
+#' @noRd
 rnakagami <- function(n, m, Omega) {
   qnakagami(stats::runif(n), m, Omega)
 }

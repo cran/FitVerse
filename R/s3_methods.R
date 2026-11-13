@@ -21,20 +21,17 @@
 #   University of the South Pacific, Fiji
 #
 # Package : FitVerse
-# Version : 1.0-1
-# Date    : 2026-06-17
+# Version : 1.0-3
+# Date    : 2026-11-13
 # License : GPL (>= 3)
 # ============================================================
 
 
 # -- print.fitverse ------------------------------------------------------------
 
-#' Print a concise summary of a fitverse object
-#'
-#' @param x   A \code{fitverse} object.
-#' @param ... Ignored.
 #' @export
 #' @method print fitverse
+#' @noRd
 print.fitverse <- function(x, ...) {
   fit   <- x$best_fit
   entry <- get_dist_entry(fit$dist_key)
@@ -77,70 +74,80 @@ print.fitverse <- function(x, ...) {
 }
 
 
-# -- summary.fitverse ----------------------------------------------------------
+# -- fitverse_summary class ----------------------------------------------------
 
-#' Full diagnostic report for a fitverse object
-#'
-#' Prints the best-fit details and the full ranking table of all
-#' distributions that were fitted.
-#'
-#' @param object A \code{fitverse} object.
-#' @param top_n  Number of rows to show in the ranking table. Default 10.
-#' @param ...    Ignored.
 #' @export
 #' @method summary fitverse
+#' @noRd
 summary.fitverse <- function(object, top_n = 10L, ...) {
+  tbl <- head(object$ranking, top_n)
+  out <- structure(
+    list(
+      object       = object,
+      top_n        = top_n,
+      data_summary = object$data_summary,
+      ranking      = tbl
+    ),
+    class = "fitverse_summary"
+  )
+  out
+}
+
+
+#' @export
+#' @method print fitverse_summary
+#' @noRd
+print.fitverse_summary <- function(x, ...) {
+  object <- x$object
 
   cat("\n")
   cat("===============================================================\n")
   cat("  FitVerse: Distribution Fitting Summary\n")
   cat("===============================================================\n")
 
-  # Use data_summary if present (fitverse >= 1.0), else compute on-the-fly
-  if (!is.null(object$data_summary)) {
-    print_data_summary(object$data_summary)
+  # Data summary section
+  if (!is.null(x$data_summary)) {
+    ds <- x$data_summary
+    cat(sprintf("  Sample size  : %d\n",           ds$n))
+    cat(sprintf("  Mean         : %.4f\n",          ds$mean))
+    cat(sprintf("  Std Dev      : %.4f\n",          ds$sd))
+    cat(sprintf("  Skewness     : %.4f\n",          ds$skewness))
+    cat(sprintf("  Kurtosis     : %.4f  (excess)\n",ds$kurtosis))
+    cat(sprintf("  Range        : [%.4f, %.4f]\n",  ds$min, ds$max))
   } else {
-    x <- object$data
-    cat(sprintf("  Sample size  : %d\n", object$n))
-    cat(sprintf("  Mean         : %.4f\n", mean(x)))
-    cat(sprintf("  Std Dev      : %.4f\n", stats::sd(x)))
-    cat(sprintf("  Skewness     : %.4f\n", skewness_stat(x)))
-    cat(sprintf("  Kurtosis     : %.4f  (excess)\n", kurtosis_stat(x)))
-    cat(sprintf("  Range        : [%.4f, %.4f]\n", min(x), max(x)))
+    xvec <- object$data
+    cat(sprintf("  Sample size  : %d\n",   object$n))
+    cat(sprintf("  Mean         : %.4f\n", mean(xvec)))
+    cat(sprintf("  Std Dev      : %.4f\n", stats::sd(xvec)))
+    cat(sprintf("  Range        : [%.4f, %.4f]\n", min(xvec), max(xvec)))
   }
   cat(sprintf("  Methods used : %s\n", paste(object$method, collapse = ", ")))
   cat(sprintf("  Criterion    : %s\n",  object$criterion))
 
   # Best-fit section
   cat("\n")
-  print(object)   # reuse print method for best-fit block
+  print(object)
 
   # Ranking table
-  cat("\n  Full ranking table (top", min(top_n, nrow(object$ranking)), "models):\n\n")
-
-  tbl <- head(object$ranking, top_n)
-  # Select display columns
+  tbl       <- x$ranking
   show_cols <- c("Rank", "Distribution", "Method", "AIC", "Delta_AIC",
                  "BIC", "KS_p", "AD_p")
   show_cols <- show_cols[show_cols %in% names(tbl)]
+  cat("\n  Full ranking table (top", nrow(tbl), "models):\n\n")
   print(tbl[, show_cols], row.names = FALSE)
 
   cat("\n")
   cat("===============================================================\n")
 
-  invisible(object)
+  invisible(x)
 }
 
 
 # -- coef.fitverse ------------------------------------------------------------
 
-#' Extract estimated parameters from the best-fit distribution
-#'
-#' @param object A \code{fitverse} object.
-#' @param ...    Ignored.
-#' @return Named numeric vector of parameter estimates.
 #' @export
 #' @method coef fitverse
+#' @noRd
 coef.fitverse <- function(object, ...) {
   object$best_fit$params
 }
@@ -148,13 +155,9 @@ coef.fitverse <- function(object, ...) {
 
 # -- logLik.fitverse -----------------------------------------------------------
 
-#' Extract the log-likelihood of the best-fit distribution
-#'
-#' @param object A \code{fitverse} object.
-#' @param ...    Ignored.
-#' @return Object of class \code{"logLik"}.
 #' @export
 #' @method logLik fitverse
+#' @noRd
 logLik.fitverse <- function(object, ...) {
   fit <- object$best_fit
   ll  <- structure(fit$loglik,
@@ -167,14 +170,9 @@ logLik.fitverse <- function(object, ...) {
 
 # -- AIC.fitverse -------------------------------------------------------------
 
-#' Extract the AIC of the best-fit distribution
-#'
-#' @param object A \code{fitverse} object.
-#' @param ...    Ignored.
-#' @param k      Penalty per parameter (default 2 for standard AIC).
-#' @return Numeric AIC value.
 #' @export
 #' @method AIC fitverse
+#' @noRd
 AIC.fitverse <- function(object, ..., k = 2) {
   fit <- object$best_fit
   k * fit$n_params - 2 * fit$loglik
@@ -183,13 +181,9 @@ AIC.fitverse <- function(object, ..., k = 2) {
 
 # -- BIC.fitverse -------------------------------------------------------------
 
-#' Extract the BIC of the best-fit distribution
-#'
-#' @param object A \code{fitverse} object.
-#' @param ...    Ignored.
-#' @return Numeric BIC value.
 #' @export
 #' @method BIC fitverse
+#' @noRd
 BIC.fitverse <- function(object, ...) {
   object$best_fit$bic
 }
@@ -197,19 +191,9 @@ BIC.fitverse <- function(object, ...) {
 
 # -- as.list.fitverse ----------------------------------------------------------
 
-#' Convert a fitverse object to a plain list suitable for serialisation
-#'
-#' Strips non-serialisable elements (raw fit objects from fitdistrplus,
-#' environments, etc.) and converts the result to a flat, JSON-friendly list.
-#' This is the primary bridge to the Shiny web interface.
-#'
-#' @param x   A \code{fitverse} object.
-#' @param ... Ignored.
-#' @return A named list with the following top-level keys:
-#'   \code{best_fit}, \code{ranking}, \code{data_summary}, \code{n},
-#'   \code{xlab}, \code{criterion}, \code{method}.
 #' @export
 #' @method as.list fitverse
+#' @noRd
 as.list.fitverse <- function(x, ...) {
 
   bf    <- x$best_fit
@@ -250,26 +234,48 @@ as.list.fitverse <- function(x, ...) {
 
 # -- to_json -------------------------------------------------------------------
 
-#' Serialise a fitverse object to a JSON string
-#'
-#' Converts the \code{fitverse} object to a JSON string via
-#' \code{\link{as.list.fitverse}()}.  Requires the \pkg{jsonlite} package.
-#'
-#' @param x      A \code{fitverse} object.
-#' @param pretty Logical: indent output for readability? Default \code{TRUE}.
-#' @param ...    Ignored.
-#' @return A JSON character string.
 #' @export
+#' @noRd
 to_json <- function(x, pretty = TRUE, ...) {
   UseMethod("to_json")
 }
 
 #' @export
+#' @method to_json fitverse
+#' @noRd
 to_json.fitverse <- function(x, pretty = TRUE, ...) {
   if (!requireNamespace("jsonlite", quietly = TRUE))
     stop("Package 'jsonlite' is required for to_json(). Install it with install.packages('jsonlite').",
          call. = FALSE)
   jsonlite::toJSON(as.list(x), pretty = pretty, auto_unbox = TRUE, na = "null")
+}
+
+
+# -- ranking() accessor --------------------------------------------------------
+
+#' @export
+#' @noRd
+ranking <- function(object, ...) UseMethod("ranking")
+
+#' @export
+#' @method ranking fitverse
+#' @noRd
+ranking.fitverse <- function(object, ...) {
+  object$ranking
+}
+
+
+# -- all_fits() accessor -------------------------------------------------------
+
+#' @export
+#' @noRd
+all_fits <- function(object, ...) UseMethod("all_fits")
+
+#' @export
+#' @method all_fits fitverse
+#' @noRd
+all_fits.fitverse <- function(object, ...) {
+  object$fits
 }
 
 

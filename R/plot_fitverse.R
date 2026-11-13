@@ -325,8 +325,7 @@ plot.fitverse <- function(x,
 
 # -- Q-Q panel ----------------------------------------------------------------
 
-#' Build the Q-Q plot panel with pointwise 95% confidence band
-#' @keywords internal
+#' @noRd
 .plot_qq_panel <- function(fv_obj, xlab = "x") {
 
   data  <- fv_obj$data
