@@ -29,10 +29,10 @@ fit <- fitverse(
   verbose = FALSE
 )
 
-## Ranking table (top results by AIC) -- using accessor
+## Ranking table (top results by AIC)
 ranking(fit)[, c("Distribution", "Method", "AIC", "Delta_AIC", "AD_p")]
 
-## Summary (assign to suppress automatic printing)
+## Summary
 s <- summary(fit)
 print(s)
 
@@ -73,19 +73,20 @@ message("Saved: fig_portpirie.pdf")
 
 
 ## ----------------------------------------------------------------------------
-## Section 3.4 - Endosulfan toxicity: heavy-tailed distributions
+## Section 3.4 - Censored data: fitverse_censored
 ## ----------------------------------------------------------------------------
 
-data("endosulfan", package = "fitdistrplus")
-fit_endo <- fitverse(
-  endosulfan$ATV,
-  dists   = c("lognormal", "loglogistic", "pareto", "gamma", "weibull"),
-  method  = "MLE",
-  xlab    = expression("LC"[50] ~ "(" * mu * "g/L)"),
-  verbose = FALSE
+set.seed(1)
+times   <- rweibull(100, shape = 1.8, scale = 50)
+status  <- as.integer(times <= 60)
+times   <- pmin(times, 60)
+fit_cens <- fitverse_censored(
+  times,
+  status = status,
+  dists  = c("weibull", "lognormal", "gamma"),
+  method = "MLE"
 )
-
-summary(fit_endo)
+summary(fit_cens)
 
 
 ## ----------------------------------------------------------------------------
@@ -112,44 +113,45 @@ sapply(gamma_fits, function(f) c(AIC = f$aic, AD_p = f$gof$P_value[2]))
 
 
 ## ----------------------------------------------------------------------------
-## Section 3.6 - Grouped / interval-censored data
+## Section 3.6 - Grouped / interval-censored data: Danish fire insurance
 ## ----------------------------------------------------------------------------
 
-## Read and fit grouped rainfall data bundled with the package
-g_file <- system.file("extdata", "rainfall_grouped.csv", package = "FitVerse")
+## Danish fire insurance losses 1980-1990, grouped (McNeil 1997, Table 1)
+## Losses in millions of DKK; only claims >= 1 million DKK are recorded.
+## The file danish_fire_grouped.csv is bundled with the package.
+g_file <- system.file("extdata", "danish_fire_grouped.csv", package = "FitVerse")
 if (nchar(g_file) > 0 && file.exists(g_file)) {
   g <- read_grouped_csv(g_file)
-  fit_grp <- fitverse_grouped(
-    g,
-    dists   = c("gamma", "lognormal", "weibull"),
-    method  = "MLE",
-    verbose = FALSE
+  fit_dk <- fitverse_grouped(
+    lower  = g$lower,
+    upper  = g$upper,
+    counts = g$counts,
+    dists  = c("pareto", "lomax", "lognormal", "burr", "loglogistic"),
+    method = "MLE",
+    xlab   = "Loss (millions DKK)"
   )
-  summary(fit_grp)
+  print(fit_dk)
+  ranking(fit_dk)[, c("Distribution", "Method", "AIC", "Delta_AIC")]
 } else {
-  message("Note: rainfall_grouped.csv not found in package extdata; skipping grouped example.")
+  message("Note: danish_fire_grouped.csv not found in package extdata; skipping grouped example.")
 }
 
 
 ## ----------------------------------------------------------------------------
-## Section 3.7 - Right-censored survival data: fitverse_censored
+## Section 4 - Batch fitting: fitverse_batch
 ## ----------------------------------------------------------------------------
 
 set.seed(1)
-times   <- rweibull(100, shape = 1.8, scale = 50)
-status  <- as.integer(times <= 60)
-times   <- pmin(times, 60)
-fit_cens <- fitverse_censored(
-  times,
-  status = status,
-  dists  = c("weibull", "lognormal", "gamma"),
-  method = "MLE"
+df <- data.frame(
+  x1 = rgamma(200, shape = 2, scale = 3),
+  x2 = rlnorm(200, meanlog = 1, sdlog = 0.5)
 )
-summary(fit_cens)
+batch_res <- fitverse_batch(df, method = "MLE")
+batch_res$summary[, c("Column", "Distribution", "AIC")]
 
 
 ## ----------------------------------------------------------------------------
-## Section 4 - compare_dists utility
+## Section 5 - compare_dists utility
 ## ----------------------------------------------------------------------------
 
 set.seed(1)

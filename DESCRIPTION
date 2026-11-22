@@ -1,8 +1,8 @@
 Package: FitVerse
 Type: Package
 Title: Parametric Distribution Fitting and Analysis
-Version: 1.0-3
-Date: 2026-11-13
+Version: 1.0-4
+Date: 2026-11-22
 Authors@R: c(
     person("Karuna G.", "Reddy",
            email   = "karuna.reddy@auckland.ac.nz",
@@ -10,7 +10,8 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-9467-4668")),
     person("M. G. M.", "Khan",
            email   = "mgm.khan@usp.ac.fj",
-           role    = "aut")
+           role    = "aut",
+           comment = c(ORCID = "0000-0001-5400-9703"))
   )
 Description: Provides a unified, user-friendly interface for fitting parametric
     probability distributions to continuous univariate data. 'FitVerse' supports
@@ -50,10 +51,10 @@ Suggests: shiny (>= 1.7.0), bslib (>= 0.5.0), DT, plotly (>= 4.10.0),
 VignetteBuilder: knitr
 NeedsCompilation: no
 Config/roxygen2/version: 8.0.0
-Packaged: 2026-11-13 06:47:51 UTC; karunareddy
+Packaged: 2026-11-22 02:48:39 UTC; karunareddy
 Author: Karuna G. Reddy [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-9467-4668>),
-  M. G. M. Khan [aut]
+  M. G. M. Khan [aut] (ORCID: <https://orcid.org/0000-0001-5400-9703>)
 Maintainer: Karuna G. Reddy <karuna.reddy@auckland.ac.nz>
 Repository: CRAN
-Date/Publication: 2026-11-13 07:30:08 UTC
+Date/Publication: 2026-11-22 08:50:02 UTC

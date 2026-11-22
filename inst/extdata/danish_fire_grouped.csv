@@ -1,0 +1,25 @@
+# Danish fire insurance losses, 1980-1990 (grouped frequency table)
+# Source: McNeil, A.J. (1997). Estimating the tails of loss severity
+#   distributions using extreme value theory. ASTIN Bulletin, 27(1), 117-137.
+#   Table 1, page 120.
+# Units: millions of Danish Krone (DKK)
+# Coverage: all fire insurance claims with individual loss >= 1 million DKK
+#   recorded by a major Danish insurer over the period 1980-1990.
+# Note: the dataset is left-truncated at 1 million DKK; claims below this
+#   threshold were not individually recorded.
+# Total claims in table: 2167
+#
+# Column definitions:
+#   lower  - lower boundary of interval (millions DKK), closed on left
+#   upper  - upper boundary of interval (millions DKK), open on right;
+#            Inf indicates an open-ended right tail
+#   count  - number of claims falling in this interval
+lower,upper,count
+1,2,1101
+2,3,357
+3,5,302
+5,10,258
+10,25,110
+25,50,24
+50,100,10
+100,Inf,5

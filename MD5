@@ -1,4 +1,4 @@
-d29688d58e942fcd4acee77d8d420201 *DESCRIPTION
+455b07bcd088d7d170bca02cbbf76cfb *DESCRIPTION
 338fee37372213b92a0e9c09b6f04c20 *NAMESPACE
 10ef0a92b1af7ba966c38e3e5e629854 *R/FitVerse-package.R
 3924ef8b90f384e9169f162304754264 *R/app.R
@@ -30,16 +30,17 @@ cb98421ab99e49265663feecbc1154bd *inst/app/app.R
 33ce49ffe55908b827633e9a0232cd60 *inst/app/www/logo.svg
 332fa352d495c4f90853a37a90e55d59 *inst/doc/fitverse-introduction.R
 43560a678bfe95a8df8981c914d2eabc *inst/doc/fitverse-introduction.Rmd
-2b6945b664f313470233d9e5bd3c91f1 *inst/doc/fitverse-introduction.html
+2296d0cca4ea4a5644d51e7ab579e9fb *inst/doc/fitverse-introduction.html
 4edbf8772d583a050ab95b3afb0f04db *inst/extdata/annual_max_flows.csv
 a6fc440e7d8fe7480cee3d9369e7bfe7 *inst/extdata/concrete.csv
+2f2241c0845e33b1557a40075f30bba9 *inst/extdata/danish_fire_grouped.csv
 7d6ab3fc0af2880710bf3a6c1c0f736e *inst/extdata/failure_times.csv
 770221bf34b1c283b605aec5886dffa9 *inst/extdata/failure_times_grouped.csv
 44e2c0290d3e36389f13dd49ff00b8c5 *inst/extdata/insurance_claims.csv
 c7c8962ca097adc9f8208668ddb4b5bb *inst/extdata/insurance_losses_grouped.csv
 6884d08895de5985870391ea80e43068 *inst/extdata/rainfall_grouped.csv
 727c02cff79d53da9c5d81929a8dc2dd *inst/extdata/wind_speeds.csv
-37c0b59ec4133cbc83d1337ce5e44575 *inst/replication.R
+bd273ea0f3ddf251a89bc3822d17a6ae *inst/replication.R
 c3c89daeab2a95a42354dbebaad15edd *man/FitVerse-package.Rd
 91cc931709f110356caa60cf7dc94a6b *man/FitVerseApp.Rd
 6c4cb38f5c177a823e3d4551c90ee07e *man/FitVerse_datasets.Rd
